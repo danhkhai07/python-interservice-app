@@ -8,7 +8,7 @@ class Job:
     init_time = None
     finished_time = None
     status = "pending"  # 4 state: pending, running, done or failed
-    input = None
+    input = -1
     mod = 1e9 + 7
     output = None
 
@@ -20,19 +20,22 @@ class Job:
     def process(self):
         if self.status in ("done", "failed"):
             return False
-        else:
-            russian_roullette = random.randint(1, 6)
-            if russian_roullette == 6: # failed
-                time.sleep(3)
-                self.status = "failed"
-                self.finished_time = datetime.datetime.now()
 
-            self.result = self.__fib(self.output)
-            self.status = "done"
+        russian_roullette = random.randint(1, 6)
+        if russian_roullette == 6: # failed
+            time.sleep(3)
+            self.status = "failed"
             self.finished_time = datetime.datetime.now()
-            return True
+
+        self.output = self.__fib(self.input)
+        self.status = "done"
+        self.finished_time = datetime.datetime.now()
+        return True
             
-    def __fib(self, n):
+    def __fib(self, n: int):
+        if n == -1:
+            return None 
+
         time.sleep(5)
         num1, num2 = 0, 1
         if n == 1: 
@@ -50,9 +53,10 @@ class Job:
         return {
             "job_id": self.job_id,
             "status": self.status,
-            "result": self.result,
+            "input": self.input,
+            "output": self.output,
             "init_time": self.init_time,
-            "finished_time_time": self.finished_time,
+            "finished_time": self.finished_time,
             "mod": self.mod,
             "description": "Returns the n'th fibonacci number.",
         }
@@ -111,4 +115,4 @@ def list_all():
     ])
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)   
+    app.run(host="0.0.0.0", port=5001)   

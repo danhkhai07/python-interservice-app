@@ -5,9 +5,9 @@ app = Flask(__name__)
 
 URL_PROCESS_JOB     = "http://worker:5001/process"
 URL_GET_JOB_INFO    = "http://worker:5001/info"
-URL_LIST_ALL        = "http://worker:5001/list-all"
+URL_LIST_ALL        = "http://worker:5001/all"
 
-@app.route("/job/<int:number>", methods=["GET"])
+@app.route("/job/<int:number>", methods=["POST"])
 def post_job(number):
     process_res = requests.post(
         URL_PROCESS_JOB,
