@@ -31,9 +31,6 @@ def get_job(job_id):
     ) 
     return jsonify(res.json())
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)   
-
 @app.route("/list-all", methods=["GET"])
 def list_all():
     res = requests.get(
@@ -41,3 +38,6 @@ def list_all():
         timeout=2,
     )
     return jsonify(res.json())
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)   

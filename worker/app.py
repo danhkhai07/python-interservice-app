@@ -109,3 +109,6 @@ def list_all():
         {"job_id": job_id, **job.to_dict()}
         for job_id, job in state["jobMap"].items()
     ])
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)   

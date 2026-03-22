@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  api-service:
+    build: ./api
+    ports:
+      - "5000:5000"
+    depends_on:
+      - worker
+
+  worker:
+    build: ./worker
+    ports:
+      - "5001:5001"
