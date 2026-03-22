@@ -1,10 +1,12 @@
-from flask import Flask, request, jsonify 
+import json
+from flask import Flask, jsonify 
 import requests
 
 app = Flask(__name__)
 
 URL_PROCESS_JOB     = "http://worker:5001/process"
 URL_GET_JOB_INFO    = "http://worker:5001/info"
+URL_LIST_ALL        = "http://worker:5001/list-all"
 
 @app.route("/job/<int:number>", methods=["GET"])
 def post_job(number):
@@ -21,7 +23,7 @@ def post_job(number):
     else:
         return jsonify({"status": "taken", "job_id": id})
         
-@app.route("/job/<int:job_id>", methods=["POST", "GET"])
+@app.route("/job/<int:job_id>", methods=["GET"])
 def get_job(job_id):
     res = requests.get(
         URL_GET_JOB_INFO,
@@ -32,3 +34,11 @@ def get_job(job_id):
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)   
+
+@app.route("/list-all", methods=["GET"])
+def list_all():
+    res = requests.get(
+        URL_LIST_ALL,
+        timeout=2,
+    )
+    return jsonify(res.json())
